@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "topological-vqpu"
+version = "0.1.0"
+description = "GPU-accelerated tensor-network and BdG simulation of an engineered topological-superconductor lattice Hamiltonian"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+# Tensor networks / DMRG (Module 2)
+tn = ["quimb>=1.8", "autoray>=0.6"]
+# GPU kernels (Module 3).  triton is Linux-only in practice; on Windows the
+# reference path is used and these tests skip.
+gpu = ["torch>=2.2", "triton>=3.0; sys_platform == 'linux'"]
+# Phonon substrate (Module 4)
+substrate = ["phonopy>=2.21", "phono3py>=3.0", "h5py"]
+dev = ["pytest>=7.4", "pytest-cov", "ruff>=0.4"]
+
+[project.scripts]
+tvqpu-lattice = "tvqpu.lattice:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = ["slow: long-running validation"]
+filterwarnings = ["error::RuntimeWarning"]
+
+[tool.ruff]
+line-length = 88
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = [
+    "E741",  # ambiguous variable names: i, j, k, l, m, n, p ARE the tensor
+             # indices here, and renaming them would make the einsum strings
+             # unreadable against the equations in ARCHITECTURE.md.
+]
