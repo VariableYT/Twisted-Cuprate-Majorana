@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Simulation output — large, regenerable
+runs/
+out/
+*.h5
+*.hdf5
+*.npz
+ledger*.jsonl
+*.log
+
+# Externally hosted phonon datasets are not redistributed here.
+# Point TVQPU_BAS_FC2 at a local copy to enable those tests.
+cache/
+*.yaml.xz
