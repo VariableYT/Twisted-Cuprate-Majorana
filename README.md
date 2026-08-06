@@ -25,10 +25,22 @@ The full technical write-up is [`paper/main.tex`](paper/main.tex) (REVTeX,
 
 ## The central result
 
-Two minima compete for the bulk gap of the Zeeman-driven channel: a **k = 0
-branch** at |V_z − √(µ²+Δ²)| that rises with the Zeeman energy, and a
-**finite-k branch** near 0.97Δ that does not. The operational gap is the
-smaller of the two, so
+The channel enters the topological phase when the Zeeman energy exceeds
+V_z,crit = √(µ²+Δ²), which is just Δ at the µ = 0 sweet spot. Above it, the
+bulk gap closes and reopens, and a Majorana pair pins exponentially to zero
+energy.
+
+![BdG excitation spectrum versus Zeeman energy](paper/figs/fig1_spectrum.png)
+
+*BdG spectrum of an N = 80 chain at µ = 0, t = 20 meV, α = 10 meV, Δ = 2 meV.
+The bulk gap closes at V_z,crit = Δ = 2 meV (green dashed) and the Majorana
+pair (red) pins to zero beyond it. Grey: bulk states.*
+
+That transition is necessary but not sufficient — what governs protection is
+not V_z,crit but Δ_top, the lowest bulk excitation at the operating point. Two
+minima compete for it: a **k = 0 branch** at |V_z − √(µ²+Δ²)| that rises with
+the Zeeman energy, and a **finite-k branch** near 0.97Δ that does not. The
+operational gap is the smaller of the two, so
 
 > **Δ_top ≤ Δ, with equality approached at V_z ≈ 2Δ**
 
