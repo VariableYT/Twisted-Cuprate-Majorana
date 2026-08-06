@@ -1,4 +1,4 @@
-# topological-vqpu
+# Twisted-Cuprate-Majorana
 
 **A validated simulation stack for a 0.3 K topological qubit architecture on a
 twisted-cuprate / topological-insulator heterostructure.**
@@ -211,15 +211,21 @@ has not been tested.**
 
 1. **The induced gap is unmeasured.** Every protection budget scales
    exponentially with it. This is the load-bearing assumption.
-2. **Not room temperature.** At 300 K the criterion demands Δ_top ≈ 517 meV —
+2. **Quantitative precision is not claimed.** Cuprates are complex oxides whose
+   interfacial physics is not quantitatively understood. Theory in these
+   systems is generally trustworthy as to how quantities *scale* and to within
+   an order of magnitude — not to a significant figure. Every number here is
+   reported as computed from the stated model at the stated parameters, and
+   should be read as a scale estimate rather than a prediction.
+3. **Not room temperature.** At 300 K the criterion demands Δ_top ≈ 517 meV —
    a bare pairing of order 1 eV, more than an order of magnitude beyond any
    known superconductor. No thermal engineering alters k_BT.
-3. **The Triton kernel is unverified.** No CUDA runner has executed it.
-4. **The disorder threshold is a bound**, not a converged value:
+4. **The Triton kernel is unverified.** No CUDA runner has executed it.
+5. **The disorder threshold is a bound**, not a converged value:
    δµ_rms/Δ_top ≈ 0.9 ± 0.15, non-monotonic in 1/L at the sampling used.
-5. **Peak phonon-focusing magnitude is a regression pin**, not validation —
+6. **Peak phonon-focusing magnitude is a regression pin**, not validation —
    it is this solver's own output. The Northrop & Wolfe Si/Ge check is unrun.
-6. **Per-flake assembly** is low-throughput laboratory work, incompatible with
+7. **Per-flake assembly** is low-throughput laboratory work, incompatible with
    wafer-scale throughput until a c-axis-coherent thin-film twist process
    exists. That is a yield limitation, not a physics one.
 
