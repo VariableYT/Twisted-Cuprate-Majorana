@@ -305,18 +305,29 @@ MZMs in vortex cores. Their topological gap descends from the induced pairing
 through an explicit reduction chain,
 %
 \begin{equation}
-\delta E = \Delta \times \tfrac{1}{2} \times (\alpha/t)^2 \times (a_0/a)^2 ,
+\delta E = \tfrac{1}{2}\, \kappa \, (\alpha/t)^2 \, (a_0/a)^2 \, \Delta_{\rm SC} ,
 \label{eq:chain}
 \end{equation}
 %
 with $\alpha = 76$~meV, $t = 132$~meV and five unit cells per moir\'e
 supercell, giving a total factor of approximately $1/30$. From their stated
 reasonable estimate $\kappa\Delta_{\rm SC}\approx 1$~meV for the induced
-pairing, Eq.~(\ref{eq:chain}) yields $\delta E \approx 0.033$~meV.
+pairing, Eq.~(\ref{eq:chain}) yields $\delta E \approx 0.03$~meV, which is the
+value they quote.
 
-Both suppressions are structural to that mechanism: the $(\alpha/t)^2$ arises
-because the Chern gap opens at second order in the spin--orbit scale, and the
-$(a_0/a)^2$ is moir\'e dilution. The Zeeman-driven channel pays neither. Its
+Of the three factors, only $\kappa$ is materially open. The authors note that
+the moir\'e scaling in $(a_0/a)^2$ cancels against $(\alpha/t)^2$ at this
+order, so the product is independent of the moir\'e cell size and a different
+twist angle does not recover it; the factor of $\tfrac{1}{2}$ is fixed. The
+proximity factor $\kappa$, by contrast, is estimated rather than computed,
+representing an order-of-magnitude reduction from the $\sim12$~meV bulk value
+of Bi-2201 through cleaving and imperfect interfacial coupling.
+
+Both of those suppressions are nonetheless structural to that mechanism, which
+is the relevant point here: the $(\alpha/t)^2$ arises because the Chern gap
+opens at second order in the spin--orbit scale, and the $(a_0/a)^2$ is moir\'e
+dilution. Neither can be engineered away within that geometry, whatever value
+$\kappa$ takes. The Zeeman-driven channel pays neither. Its
 gap is first order in the pairing, Eq.~(\ref{eq:bound}), because it is not a
 second-order Chern gap and there is no moir\'e cell. Applying the criterion
 $\dtop/\kB T \ge 20$ to both:
@@ -324,21 +335,29 @@ $\dtop/\kB T \ge 20$ to both:
 \begin{table}[h]
 \caption{Mechanism comparison. These are different physical systems; the
 comparison is of mechanisms, not a like-for-like device benchmark. Both
-numbers are model calculations and neither is measured.}
+numbers are model calculations and neither is measured. Quantitative theory in
+cuprate systems is generally reliable only to order of magnitude, so entries
+are given as scale estimates rather than predictions; the underlying computed
+values are $0.033$ and $1.944$~meV respectively.}
 \label{tab:mechanism}
 \begin{ruledtabular}
 \begin{tabular}{lcc}
 Route & topological gap & $T_{\max}$ \\
 \hline
-Vortex / Chern~\cite{Margalit2022} & 0.033 meV & 19 mK \\
-Gate-defined Zeeman channel & 1.944 meV & \textbf{1.13 K} \\
+Vortex / Chern~\cite{Margalit2022} & $\sim\!0.03$ meV & $\sim\!20$ mK \\
+Gate-defined Zeeman channel & $\sim\!2$ meV & $\sim\!1$ K \\
 \end{tabular}
 \end{ruledtabular}
 \end{table}
 
-The ratio is roughly a factor of $60$ in operating temperature, and it is the
-difference between requiring a dilution refrigerator and not. It follows from
-the published reduction chain rather than from any disagreement with it.
+The separation is of order a factor of $10$--$100$ in operating temperature,
+which is the difference between requiring a dilution refrigerator and not. It
+follows from the published reduction chain rather than from any disagreement
+with it. We emphasise that this is an order-of-magnitude statement: the
+underlying estimates on both sides carry uncertainties in the proximity
+coupling that no present theory of cuprate interfaces constrains tightly, and
+the ratio should not be read to a significant figure. What survives the
+uncertainty is the direction and the rough scale, not the number.
 
 Two secondary points. Reference~\cite{Margalit2022} uses Bi-2201 (single
 CuO$_2$ layer, bulk pairing $\sim12$~meV) whereas this architecture assumes
@@ -348,8 +367,8 @@ Caroli--de Gennes--Matricon levels by a mini-gap
 $\delta \simeq \dtop^2/E_F$; at $E_F = 50$--$100$~meV and $\dtop\approx1$~meV
 this is $11$--$22$~$\mu$eV, or $0.4$--$0.9\,\kB T$ at $0.3$~K. For the
 proposal of Ref.~\cite{Margalit2022} this is not the binding constraint, since
-$\delta E = 0.033$~meV already implies sub-$20$~mK operation; we note it only
-as a consideration for vortex-core routes generally.
+$\delta E \approx 0.03$~meV already implies operation in the tens of mK; we
+note it only as a consideration for vortex-core routes generally.
 
 % =====================================================================
 \section{Beyond mean field, and disorder}
@@ -486,6 +505,13 @@ has not been tested. A positive result must exclude Coulomb blockade.
 \begin{enumerate}
 \item \textbf{The induced gap is unmeasured} and every protection budget scales
 exponentially with it. This is the load-bearing assumption.
+\item \textbf{Quantitative precision is not claimed.} Cuprates are complex
+oxides whose interfacial physics is not quantitatively understood, and theory
+in these systems is generally trustworthy as to how quantities scale and to
+within an order of magnitude, not to a significant figure. Numerical values
+throughout are reported as computed from the stated model at the stated
+parameters; they should be read as scale estimates, and the comparison of
+Sec.~\ref{sec:comparison} in particular should not be reduced to a ratio.
 \item \textbf{Not room temperature.} At $300$~K the criterion demands
 $\dtop \approx 517$~meV, a bare pairing of order $1$~eV. No thermal engineering
 alters $\kB T$.
