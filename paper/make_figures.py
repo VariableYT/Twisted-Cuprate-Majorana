@@ -3,8 +3,11 @@ make_figures.py -- publication figures for the Rev 2.2 architecture paper.
 
 Outputs PDF (vector) into paper/figs/ for \includegraphics.
 
-Every figure is generated from tvqpu.lattice -- the same validated BdG model
-the test suite covers. No figure contains hand-drawn or illustrative data.
+Every figure EXCEPT fig0_schematic is generated from tvqpu.lattice -- the same
+validated BdG model the test suite covers, containing no hand-drawn or
+illustrative data. fig0_schematic is a drawing of the device geometry and is
+labelled as such in its caption; it is the one exception and exists because
+prose alone left the stacking order ambiguous.
 """
 
 from __future__ import annotations
@@ -52,6 +55,97 @@ def gap(mu, vz, d, nk=801):
 
 
 # --------------------------------------------------------------------------
+def fig0_schematic():
+    r"""Device schematic -- WIDE, two-column (figure*) format.
+
+    ILLUSTRATIVE, unlike every other figure in this file: a drawing of the
+    geometry, not an output of the model.
+
+    Sized for \textwidth, not \columnwidth. At single-column width the
+    annotation had to be set at ~6 pt to fit, which is below comfortable
+    reading size in print. Laying the two panels side by side across both
+    columns roughly doubles the available width and lets the labels sit at a
+    normal figure size.
+
+    The panels are DIFFERENT SAMPLES, deliberately. Milestone 1 asks a
+    materials question (does the interface induce a gap?) and needs no gating,
+    no channel and no field, so the TI can sit on top where a tip reaches it.
+    The architecture needs the channel gated, which puts the TI beneath the
+    bilayer. Same interface under test, different stacking order.
+    """
+    from matplotlib.patches import Rectangle, FancyArrow, Polygon
+
+    fig, (axa, axb) = plt.subplots(1, 2, figsize=(7.0, 2.45))
+    C_BSCCO, C_TI, C_SUB, C_GATE = C_MAIN, C_ACC, C_MUT, C_ALT
+    X0, X1 = 0.5, 5.0
+    LBL = X1 + 0.25
+
+    def layer(ax, y, h, color, label, alpha=1.0):
+        ax.add_patch(Rectangle((X0, y), X1 - X0, h, facecolor=color,
+                               edgecolor="k", lw=0.6, alpha=alpha))
+        ax.text(LBL, y + h / 2, label, va="center", ha="left", fontsize=7.0)
+
+    # ---------------- (a) Milestone 1 sample ----------------
+    layer(axa, 0.30, 0.75, C_SUB, "substrate", alpha=0.35)
+    layer(axa, 1.05, 0.55, C_BSCCO, "Bi-2212", alpha=0.95)
+    layer(axa, 1.60, 0.55, C_BSCCO, r"Bi-2212, twisted $45^\circ$", alpha=0.60)
+    layer(axa, 2.15, 0.62, C_TI, r"Bi$_2$Se$_3$ (exposed)", alpha=0.85)
+
+    axa.plot([X0, X1], [2.15, 2.15], color=C_ALT, lw=1.8, zorder=5)
+    axa.annotate("", xy=(X0 - 0.05, 2.15), xytext=(X0 - 1.05, 2.15),
+                 arrowprops=dict(arrowstyle="->", color=C_ALT, lw=0.8))
+    axa.text(X0 - 1.15, 2.15, "interface" "\n" "under test", fontsize=6.8,
+             ha="right", va="center", color=C_ALT)
+
+    axa.add_patch(Polygon([[2.5, 4.15], [3.0, 4.15], [2.75, 3.00]],
+                          closed=True, facecolor="0.25", edgecolor="k",
+                          lw=0.6))
+    axa.text(3.15, 3.78, "STM tip", fontsize=7.0, va="center")
+    axa.annotate("", xy=(2.75, 2.82), xytext=(2.75, 2.98),
+                 arrowprops=dict(arrowstyle="->", color=C_ALT, lw=1.1))
+    axa.text(2.55, 2.90, r"$dI/dV$", fontsize=6.8, ha="right", color=C_ALT)
+    axa.text(3.15, 3.32, r"$T=1$ K,  $B=0$", fontsize=6.8, va="center")
+    axa.text(3.6, 4.62, "(a) Milestone 1 sample", fontsize=8.0,
+             ha="center", va="center")
+
+    # ---------------- (b) architecture ----------------
+    layer(axb, 0.30, 0.50, C_GATE, "gates", alpha=0.55)
+    layer(axb, 0.80, 0.40, C_SUB, "dielectric", alpha=0.30)
+    layer(axb, 1.20, 0.62, C_TI, r"Bi$_2$Se$_3$", alpha=0.85)
+    layer(axb, 1.82, 0.55, C_BSCCO, r"Bi-2212, twisted $45^\circ$", alpha=0.60)
+    layer(axb, 2.37, 0.55, C_BSCCO, "Bi-2212", alpha=0.95)
+
+    axb.plot([X0, X1], [1.82, 1.82], color=C_ALT, lw=1.8, zorder=5)
+    axb.add_patch(Rectangle((1.30, 1.28), 2.90, 0.46, facecolor="none",
+                            edgecolor=C_ALT, lw=1.2, ls="--", zorder=6))
+    for x in (1.30, 4.20):
+        axb.plot(x, 1.51, "o", color=C_ALT, ms=4.5, zorder=7)
+    axb.annotate("", xy=(1.55, 1.26), xytext=(1.15, 0.12),
+                 arrowprops=dict(arrowstyle="->", color=C_ALT, lw=0.7))
+    axb.text(1.10, 0.02, r"gate-defined channel; $\gamma_{1,2}$ at ends",
+             fontsize=6.8, ha="left", va="top", color=C_ALT)
+
+    axb.add_patch(FancyArrow(0.6, 3.55, 1.55, 0.0, width=0.035,
+                             head_width=0.18, head_length=0.28,
+                             facecolor="k", edgecolor="k"))
+    axb.text(2.60, 3.55, r"$B_\parallel$ along the channel", fontsize=7.0,
+             va="center")
+    axb.text(3.6, 4.62, "(b) Architecture", fontsize=8.0,
+             ha="center", va="center")
+
+    for ax in (axa, axb):
+        ax.set_xlim(-2.4, 9.6)
+        ax.set_ylim(-0.75, 4.95)
+        ax.axis("off")
+
+    fig.subplots_adjust(wspace=0.02, left=0.005, right=0.995,
+                        top=0.985, bottom=0.02)
+    fig.savefig(OUT / "fig0_schematic.pdf")
+    fig.savefig(OUT / "fig0_schematic.png", dpi=200)
+    plt.close(fig)
+    print("  fig0_schematic.pdf/.png  (wide, two-column)")
+
+# --------------------------------------------------------------------------
 def fig1_spectrum():
     """BdG excitation spectrum vs Zeeman energy -- the topological transition."""
     fig, ax = plt.subplots(figsize=(3.35, 2.5))
@@ -92,7 +186,7 @@ def fig2_two_branches():
     i = int(np.argmax(actual))
     ax.plot(vzs[i], actual[i], "o", color=C_MAIN, ms=5, zorder=5)
     ax.annotate(rf"optimum $V_z={vzs[i]:.2f}$" "\n" rf"$\Delta_{{\rm top}}={actual[i]:.3f}$ meV",
-                xy=(vzs[i], actual[i]), xytext=(vzs[i] + 1.1, actual[i] - 0.42),
+                xy=(vzs[i], actual[i]), xytext=(vzs[i] + 1.35, actual[i] - 0.62),
                 fontsize=6.5, color=C_MAIN,
                 arrowprops=dict(arrowstyle="->", color=C_MAIN, lw=0.7))
     ax.plot(3.0, gap(0.0, 3.0, d), "s", color=C_ALT, ms=5, zorder=5)
@@ -102,7 +196,9 @@ def fig2_two_branches():
     ax.set_xlabel(r"Zeeman energy $V_z$ (meV)")
     ax.set_ylabel(r"$\Delta_{\rm top}$ (meV)")
     ax.set_xlim(2, 9); ax.set_ylim(0, 2.6)
-    ax.legend(frameon=False, loc="upper right", handlelength=1.6)
+    leg = ax.legend(loc="lower right", handlelength=1.6, framealpha=0.92,
+                    edgecolor="none", facecolor="white", borderpad=0.5)
+    leg.set_zorder(6)
     sec = ax.secondary_xaxis("top", functions=(vz_to_B, lambda b: 0.5*G_FACTOR*MU_B*b))
     sec.set_xlabel(r"in-plane field $B_\parallel$ (T)", fontsize=7.5)
     fig.savefig(OUT / "fig2_branches.pdf"); plt.close(fig)
@@ -124,17 +220,30 @@ def fig3_operating_map():
                        vmin=0, vmax=2.0, rasterized=True)
     cb = fig.colorbar(im, ax=ax, pad=0.02)
     cb.set_label(r"$\Delta_{\rm top}$ (meV)", fontsize=7.5)
-    ax.plot(mus, [math.hypot(m, d) for m in mus], color="w", lw=1.0, ls="--")
-    ax.text(6.4, 6.9, r"$V_{z,\rm crit}$", color="w", fontsize=6.5, rotation=32)
+    ax.plot(mus, [math.hypot(m, d) for m in mus], color="w", lw=1.1, ls="--")
+    # At (6.4, 6.9) this label straddled the white no-phase wedge and the pale
+    # end of viridis, so white type was unreadable on both sides. Moved up the
+    # boundary into the coloured region and given a dark backing.
+    ax.text(8.9, 9.6, r"$V_{z,\rm crit}$", color="w", fontsize=6.5,
+            rotation=30, ha="center", va="center", zorder=6,
+            bbox=dict(boxstyle="round,pad=0.16", fc="0.15", ec="none",
+                      alpha=0.72))
     best = [vzs[np.nanargmax(Z[:, a])] for a in range(len(mus))]
     ax.plot(mus, best, color=C_ALT, lw=1.3, label="optimum locus")
     for B, ls in ((9.0, ":"), (16.0, "-")):
-        ax.axhline(0.5*G_FACTOR*MU_B*B, color="w", ls=ls, lw=1.0)
-        ax.text(0.25, 0.5*G_FACTOR*MU_B*B + 0.16, f"{B:.0f} T",
-                color="w", fontsize=6.5)
+        y = 0.5*G_FACTOR*MU_B*B
+        ax.axhline(y, color="w", ls=ls, lw=1.1)
+        # dark pill behind the field labels: plain white type disappeared
+        # against the pale-green plateau of viridis
+        ax.text(0.30, y + 0.30, f"{B:.0f} T", color="w", fontsize=6.5,
+                va="center", zorder=6,
+                bbox=dict(boxstyle="round,pad=0.18", fc="0.15", ec="none",
+                          alpha=0.72))
     ax.set_xlabel(r"chemical potential $\mu$ (meV)")
     ax.set_ylabel(r"$V_z$ (meV)")
-    ax.legend(frameon=False, loc="lower right", labelcolor="w")
+    leg = ax.legend(loc="lower right", labelcolor="w", framealpha=0.55,
+                    facecolor="0.15", edgecolor="none", borderpad=0.45)
+    leg.set_zorder(6)
     fig.savefig(OUT / "fig3_map.pdf"); plt.close(fig)
     print("  fig3_map.pdf")
 
@@ -154,7 +263,13 @@ def fig4_robustness():
     ax.plot(ds, opt, color=C_MAIN, lw=1.6, label=r"$V_z$ optimised (Rev 2.2)")
     ax.plot(ds, ds, ls=":", color=C_MUT, lw=0.9, label=r"$\Delta_{\rm top}=\Delta$")
     ax.axhline(0.517, color=C_ACC, lw=0.9)
-    ax.text(2.15, 0.575, r"floor: $T_{\max}=0.3$ K", color=C_ACC, fontsize=6.5)
+    # The only band clear of both curves: right of Delta = 2.5, where the
+    # fixed-Vz curve has already dived below the floor and the optimised curve
+    # is far above it. Left-hand placements are crossed by the rising curves.
+    ax.text(3.15, 0.565, r"floor: $T_{\max}=0.3$ K", color=C_ACC, fontsize=6.5,
+            ha="right", va="bottom",
+            bbox=dict(boxstyle="round,pad=0.15", fc="white", ec="none",
+                      alpha=0.85))
     ax.set_xlabel(r"induced pairing gap $\Delta$ (meV)")
     ax.set_ylabel(r"$\Delta_{\rm top}$ (meV)")
     ax.set_xlim(0.2, 3.2); ax.set_ylim(0, 3.2)
@@ -202,15 +317,20 @@ def fig6_tunneling():
     ax.axhline(1.0, color=C_MUT, lw=0.6, ls=":")
     ax.set_xlabel(r"bias $V$ (mV)")
     ax.set_ylabel(r"$dI/dV$ (normalised)")
-    ax.set_xlim(-4, 4); ax.set_ylim(0, 2.6)
-    ax.legend(frameon=False, loc="upper right")
-    ax.text(-3.85, 2.35, "predicted, $T=1$ K", fontsize=6.5, color=C_MUT)
+    ax.set_xlim(-4, 4); ax.set_ylim(0, 2.95)
+    # headroom added and the legend backed in white: at ylim 2.6 the box sat
+    # directly on the Delta = 2 meV coherence peak
+    leg = ax.legend(loc="upper right", framealpha=0.92, edgecolor="none",
+                    facecolor="white", borderpad=0.45, handlelength=1.5)
+    leg.set_zorder(6)
+    ax.text(-3.85, 2.72, "predicted, $T=1$ K", fontsize=6.5, color=C_MUT)
     fig.savefig(OUT / "fig6_tunneling.pdf"); plt.close(fig)
     print("  fig6_tunneling.pdf")
 
 
 if __name__ == "__main__":
     print("generating figures ->", OUT)
+    fig0_schematic()
     fig1_spectrum()
     fig2_two_branches()
     fig4_robustness()

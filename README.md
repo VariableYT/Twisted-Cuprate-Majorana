@@ -23,6 +23,22 @@ The full technical write-up is [`paper/main.tex`](paper/main.tex) (REVTeX,
 
 ---
 
+## The geometry
+
+![Device schematic: Milestone 1 sample and full architecture](paper/figs/fig0_schematic.png)
+
+*Cross-section. **(a)** The Milestone 1 sample: bilayer down first, Bi₂Se₃ on
+top, so the proximitised surface is exposed to a tunnelling probe. No gating,
+no channel, no field, because the measurement only asks whether the interface
+induces a gap. **(b)** The architecture: the channel is gate-defined in the
+Bi₂Se₃, which therefore sits beneath the bilayer, with B∥ along the channel
+and Majorana modes at its ends. These are deliberately different samples —
+same interface under test, different stacking order, because (b) must be gated
+and (a) must be probed. The 45° twist is an in-plane rotation and is not
+visible in cross-section.*
+
+---
+
 ## The central result
 
 The channel enters the topological phase when the Zeeman energy exceeds
@@ -170,8 +186,9 @@ pytest -m slow
 python paper/make_figures.py
 ```
 
-All six figures are computed from `tvqpu.lattice` — the same model the test
-suite validates. None are illustrative.
+Every figure except the device schematic is computed from `tvqpu.lattice` —
+the same model the test suite validates. The schematic is a drawing of the
+geometry and is labelled as such; it is the only illustrative figure.
 
 ### Other entry points
 

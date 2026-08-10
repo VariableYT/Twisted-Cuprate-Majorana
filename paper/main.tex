@@ -13,6 +13,32 @@
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \usepackage{xcolor}
 
+% ---------------------------------------------------------------------
+%  Caption styling.  REVTeX sets captions in the body font at body size,
+%  which makes a caption read as a continuation of the paragraph the float
+%  interrupted -- a real problem when a wide float lands mid-paragraph.
+%  Captions are now smaller, sans-serif and grey, with a bold black label,
+%  so they are unmistakably not body text.
+% ---------------------------------------------------------------------
+%  Implemented by redefining \@makecaption directly rather than with the
+%  caption package: revtex4-2 and caption are known to conflict, and this
+%  needs no extra package.
+\definecolor{capgrey}{gray}{0.34}
+\makeatletter
+\long\def\@makecaption#1#2{%
+  \vskip 6pt%
+  \begingroup
+    \small\sffamily\color{capgrey}%
+    \setbox\@tempboxa\hbox{\textbf{\color{black}#1.}\ #2}%
+    \ifdim \wd\@tempboxa >\hsize
+      \textbf{\color{black}#1.}\ #2\par
+    \else
+      \hbox to\hsize{\box\@tempboxa\hfil}%
+    \fi
+  \endgroup
+  \vskip 2pt}
+\makeatother
+
 \graphicspath{{figs/}}
 
 \newcommand{\dtop}{\Delta_{\rm top}}
@@ -91,18 +117,22 @@ Abrikosov vortex cores~\cite{Margalit2022,Zhu2023}, which requires an
 out-of-plane field and produces a topological gap reduced from the induced
 pairing by structural factors we discuss in Sec.~\ref{sec:comparison}.
 
-Here we analyse the alternative: a Zeeman-driven, gate-defined quasi-1D
-channel on a 3D TI surface, with MZMs at the channel endpoints and braiding by
-keyboard-gated T-junction networks~\cite{Karzig2017}. Our central result is
-that the operational gap of this device is bounded by the induced pairing
-itself, $\dtop \le \Delta$, and that the bound is nearly saturated at a
-specific Zeeman energy which prior specifications of this architecture did not
-adopt.
+Here we analyse the alternative, Fig.~\ref{fig:device}: a Zeeman-driven,
+gate-defined quasi-1D channel on a 3D TI surface, with MZMs at the channel
+endpoints and braiding by keyboard-gated T-junction
+networks~\cite{Karzig2017}. The channel is defined electrostatically rather
+than by etching, so the TI surface state is left undamaged and the channel can
+be closed or displaced after fabrication; an in-plane field along it supplies
+the Zeeman energy. Our central result is that the operational gap of this
+device is bounded by the induced pairing itself, $\dtop \le \Delta$, and that
+the bound is nearly saturated at a specific Zeeman energy which prior
+specifications of this architecture did not adopt.
 
 \emph{Scope.} This is a design study. No device has been fabricated and no
 measurement has been performed. Every number below is conditional on an assumed
 induced pairing gap $\Delta$, which is unmeasured in this material system; we
-return to this in Secs.~\ref{sec:milestone} and~\ref{sec:limitations}. We make
+return to this in Secs.~\ref{sec:milestone} and~\ref{sec:limitations};
+Sec.~\ref{sec:milestone} specifies the experiment that would settle it. We make
 no room-temperature claim: at $300$~K, $\kB T = 25.9$~meV, and the criterion
 $\dtop/\kB T \ge 20$ would demand a pairing gap of order $1$~eV, more than an
 order of magnitude beyond any known superconductor.
@@ -111,8 +141,22 @@ order of magnitude beyond any known superconductor.
 \section{Model}
 \label{sec:model}
 
-The quantum channel is a gate-defined quasi-1D strip on the Bi$_2$Se$_3$
-surface beneath the twisted bilayer. Its low-energy physics is captured by a
+\begin{figure}[tb]
+\includegraphics[width=\columnwidth]{fig_device.pdf}
+\caption{The architecture, drawn in perspective and not to scale. The channel
+is gate-defined in the Bi$_2$Se$_3$ surface, which therefore lies beneath the
+twisted bilayer, with $B_\parallel$ applied along the channel and Majorana
+modes $\gamma_{1,2}$ at its ends. Red marks the proximitised interface, whose
+induced gap $\Delta$ sets every energy scale below. The $45^\circ$ relative
+rotation of the two Bi-2212 layers is in-plane and is not depicted. Layer
+thicknesses shown span roughly $6$~nm to $0.5$~mm and are schematic.}
+\label{fig:device}
+\end{figure}
+
+The channel of Fig.~\ref{fig:device} is a quasi-1D strip on the
+Bi$_2$Se$_3$ surface, gated from beneath through a dielectric and
+proximitised from above by the twisted bilayer. Its low-energy physics is
+captured by a
 discretised Bogoliubov--de Gennes (BdG) chain of $N$ sites with lattice
 constant $a = 10$~nm, in the four-component Nambu\,$\otimes$\,spin basis
 $\Psi_j = (c_{j\uparrow}, c_{j\downarrow}, c^\dagger_{j\uparrow},
@@ -156,7 +200,7 @@ which reduces to $\vzc = \Delta$ at the $\mu=0$ sweet spot. Figure~\ref{fig:spec
 shows the numerically exact spectrum of an $N=80$ chain: the bulk gap closes at
 $\vzc$ and a Majorana pair pins exponentially to zero energy beyond it.
 
-\begin{figure}[t]
+\begin{figure}[tb]
 \includegraphics[width=\columnwidth]{fig1_spectrum.pdf}
 \caption{BdG excitation spectrum of an $N=80$ chain versus Zeeman energy at
 $\mu=0$, $t=20$~meV, $\alpha=10$~meV, $\Delta=2$~meV. The bulk gap closes at
@@ -193,7 +237,7 @@ Figure~\ref{fig:branches} shows the crossover explicitly. The two dashed
 curves are Eqs.~(\ref{eq:branch0}) and (\ref{eq:branchk}); the solid curve is
 the exact gap.
 
-\begin{figure}[t]
+\begin{figure}[tb]
 \includegraphics[width=\columnwidth]{fig2_branches.pdf}
 \caption{Operational gap versus Zeeman energy at $\mu=0$, $\Delta=2$~meV. The
 $k=0$ branch (grey dashed) rises without bound; the finite-$k$ branch (green
@@ -211,7 +255,7 @@ $\Delta = 2$~meV this is the difference between $1.000$~meV and $1.944$~meV,
 with no change to any material parameter. Table~\ref{tab:compare} collects the
 downstream consequences.
 
-\begin{table}[t]
+\begin{table}[tb]
 \caption{Operating point at $\Delta = 2$~meV, $\mu = 0$. Both columns are
 computed with the same model; the left column is the previously specified
 choice $\vz = 1.5\Delta$.}
@@ -248,7 +292,7 @@ hybridisation below $0.1$~feV, the production channel shortens from
 $5.73$~$\mu$m to $3.24$~$\mu$m. For a per-flake exfoliation process in which
 die area is the yield driver, this is a material secondary benefit.
 
-\begin{figure}[t]
+\begin{figure}[tb]
 \includegraphics[width=\columnwidth]{fig5_localisation.pdf}
 \caption{Site-resolved Majorana probability density at $N=200$ for the two
 operating points. Optimising $\vz$ shortens $\xi$ from $19.1$ to $10.8$ sites,
@@ -269,7 +313,7 @@ report the edge of its own scan range as an optimum. Figure~\ref{fig:map} shows
 $\dtop$ over the $(\mu,\vz)$ plane with the optimum locus and two magnet
 ceilings overlaid.
 
-\begin{figure}[t]
+\begin{figure}[tb]
 \includegraphics[width=\columnwidth]{fig3_map.pdf}
 \caption{$\dtop$ over the $(\mu,\vz)$ plane at $\Delta = 2$~meV. White dashed:
 the phase boundary $\vzc=\sqrt{\mu^2+\Delta^2}$. Red: the optimum locus,
@@ -419,6 +463,53 @@ optimisation. The engineering conclusion (the phase tolerates disorder well in
 excess of realistic gated-TI potential variance) is robust; the precise
 threshold is not.
 
+\subsection{Retention of the induced gap}
+\label{sec:retention}
+
+The clean-limit result $\dtop/\Delta = 0.98$ invites an immediate objection.
+The only comparable fabricated device---InAs--Pb tetrons, in which an induced
+gap $\Delta_{\rm ind} = 570~\mu$eV yields a topological gap
+$\Delta_T \approx 70~\mu$eV~\cite{MicrosoftPb2026}---retains $0.12$. A factor
+of eight separates a clean single-band calculation from measured hardware, and
+the difference is the physics this model omits.
+
+\begin{figure}[tb]
+\includegraphics[width=\columnwidth]{fig7_retention.pdf}
+\caption{Retention $\dtop/\Delta$ against disorder strength, medians over $24$
+realisations with interquartile bands, $N=200$, $\Delta=2$~meV,
+$\vz=3.95$~meV. Chemical-potential and bond disorder are shown separately
+because they are not equivalent. Curves terminate where the Majorana splitting
+ceases to be small against the bulk edge: beyond that the topological phase is
+gone and the third eigenvalue is a localised state, not a gap. Dashed: the
+$0.12$ measured in Ref.~\cite{MicrosoftPb2026}. Dotted: the retention below
+which this architecture fails its own criterion at $\Delta=2$~meV.}
+\label{fig:retention}
+\end{figure}
+
+Figure~\ref{fig:retention} sweeps the disorder this model does represent. The
+two channels behave very differently. Under chemical-potential disorder alone
+the channel retains $0.77$ at $\delta_{\rm rms} = \Delta$ and does not fall to
+$0.12$ until $\delta_{\rm rms} \approx 3.1\,\Delta$; adding bond disorder at
+equal r.m.s.\ reaches the same retention at $\approx 1.3\,\Delta$. Bond
+disorder therefore dominates the loss, and a sweep that varies both while
+reporting only $\delta\mu_{\rm rms}$ overstates the sensitivity to
+electrostatic potential variance by roughly a factor of two in disorder
+strength.
+
+Two limits on what this settles. Sub-band occupation and orbital depairing are
+absent from a single-band chain, and both contribute to the measured
+suppression in Ref.~\cite{MicrosoftPb2026}; the curves are therefore an upper
+bound on retention at a given disorder, not a prediction of the realised value.
+And the decomposition runs the other way too: that reference reports one ratio,
+which cannot determine three loss coefficients, so we do not attempt to infer
+their disorder level from it. What the figure supplies is the disorder scale at
+which \emph{this} model would reproduce \emph{that} retention---between $1.3$
+and $3.1$ times the induced gap, depending on whether bond disorder is
+comparable to electrostatic---and the corresponding question for experiment:
+the potential and bond variance of a cold-stacked cuprate/TI interface is
+unmeasured, and at $\delta_{\rm rms} \gtrsim \Delta$ it, rather than $\Delta$
+itself, becomes the binding constraint.
+
 % =====================================================================
 \section{The decisive measurement}
 \label{sec:milestone}
@@ -428,16 +519,54 @@ gap in the Bi$_2$Se$_3$ surface beneath a cold-stacked $45^\circ$ bilayer.
 This quantity cannot be computed: cuprate superconductivity has no accepted
 microscopic theory, so the pairing in the parent material---and hence what it
 induces across an interface---is not obtainable from first principles.
-Theoretical estimates treat it as an input.
+Theoretical estimates treat it as an input. This section specifies the
+experiment that would supply it, and states in advance what each outcome
+implies for the architecture.
 
-The experiment is tunneling spectroscopy (STM or planar junction) into the
-proximitised TI surface at zero field, with no gating, channel definition or
-device fabrication. Because tunneling resolution is $\approx 3.5\kB T$, a
-$2$~meV gap is comfortably resolved at $1$~K ($3.5\kB T = 0.30$~meV) and
-marginally at $4.2$~K; a dilution refrigerator is not required.
-Figure~\ref{fig:tunneling} gives predicted spectra.
+\subsection{The sample}
 
-\begin{figure}[t]
+\begin{figure}[tb]
+\includegraphics[width=\columnwidth]{fig_m1sample.pdf}
+\caption{The Milestone~1 sample, drawn in perspective and not to scale. The
+twisted bilayer is deposited first and the Bi$_2$Se$_3$ placed on top, so the
+proximitised surface (red) is the one the probe reaches. Compare
+Fig.~\ref{fig:device}: the interface under test and the twist angle are
+identical, and only the deposition order differs, because the device must be
+gated from beneath while this sample must be probed from above.}
+\label{fig:m1sample}
+\end{figure}
+
+The sample is the stack of Fig.~\ref{fig:m1sample}: a $45^\circ$-twisted
+Bi-2212 bilayer with a Bi$_2$Se$_3$ film on top. No gate, channel or applied
+field is required, because the question is only whether the interface induces
+a gap at all. Because none of those are needed, the sample need not reproduce
+the architecture's stacking order, and it should not: inverting the order
+leaves the proximitised surface accessible to a tunnelling probe, which in the
+device geometry of Fig.~\ref{fig:device} it is not. Bi-2212 degrades in air
+within minutes, so assembly must be performed under inert or cryogenic
+conditions.
+
+One further constraint follows from the literature reviewed at the end of this
+section and is worth stating as a specification rather than as context: the
+Bi$_2$Se$_3$ should be \emph{transferred}, not grown. Every reported null
+result on this interface used a topological insulator deposited \emph{in situ}
+on the cuprate, and the positive report used mechanical bonding. A
+van~der~Waals transfer avoids the epitaxial constraint entirely, so the two
+lattices meet at their natural constants and neither is strained to match the
+other, and it avoids exposing the Bi-2212 surface to a growth environment.
+Growing the TI on the cuprate would reproduce the configuration that has
+already failed, and would confound a null result with the one already in the
+literature.
+
+\subsection{The measurement}
+
+The measurement is tunneling spectroscopy (STM or planar junction) into the
+proximitised TI surface at zero field. Because tunneling resolution is
+$\approx 3.5\kB T$, a $2$~meV gap is comfortably resolved at $1$~K
+($3.5\kB T = 0.30$~meV) and marginally at $4.2$~K; a dilution refrigerator is
+not required. Figure~\ref{fig:tunneling} gives predicted spectra.
+
+\begin{figure}[tb]
 \includegraphics[width=\columnwidth]{fig6_tunneling.pdf}
 \caption{Predicted tunneling conductance at $T=1$~K for three values of the
 induced gap, Dynes-broadened with $\Gamma = 0.05\Delta$. The observable is a
@@ -446,7 +575,38 @@ gap ($\gtrsim 0.3$ of normal) would itself be informative.}
 \label{fig:tunneling}
 \end{figure}
 
-\begin{table}[t]
+\subsection{Controls}
+
+A hard gap at zero bias is not by itself sufficient, because a Coulomb
+blockade in a weakly coupled surface layer produces a superficially similar
+suppression. This is precisely the mechanism to which a gap-like feature was
+attributed in Bi$_2$Te$_3$ grown on Bi-2212: the spectrum evolved from a
+$V$-shaped feature in continuous films into a hard gap on nanoscale islands,
+with an additional tunnel barrier resolved between the layers, which is the
+signature of charging rather than pairing~\cite{Rachmilowitz2020}. Three
+controls distinguish the cases and none requires additional fabrication.
+
+The first is temperature dependence. A proximity-induced gap must close as the
+cuprate is driven normal, and Bi-2212 has $T_c \approx 90$~K; a
+charging-energy gap does not. Tracking $dI/dV$ from $1$~K through $T_c$ is
+therefore decisive, and the sample is already mounted.
+
+The second is an untwisted reference. A $0^\circ$ stack fabricated in the same
+run should reproduce the nodal, $V$-shaped spectrum characteristic of a single
+$d$-wave layer, while the $45^\circ$ stack should show the hard gap of
+Fig.~\ref{fig:tunneling}. A common fabrication run controls for interface
+quality, which is otherwise the leading alternative explanation for a null
+result.
+
+The third follows directly from Ref.~\cite{Rachmilowitz2020}: a charging gap
+scales with the inverse capacitance of the tunnelling region and therefore
+varies with lateral island size, whereas a proximity gap does not. Comparing
+spectra across regions of differing extent separates the two without changing
+anything else about the sample.
+
+\subsection{Decision criterion}
+
+\begin{table}[tb]
 \caption{Decision thresholds, with $\vz$ re-optimised at each $\Delta$ subject
 to a $16$~T ceiling.}
 \label{tab:decision}
@@ -472,7 +632,7 @@ the induced pairing for the same performance. In particular
 $\Delta = 1$~meV---the reasonable estimate of Ref.~\cite{Margalit2022}---moves
 from marginal ($0.29$~K) to comfortable ($0.58$~K).
 
-\begin{figure}[t]
+\begin{figure}[tb]
 \includegraphics[width=\columnwidth]{fig4_robustness.pdf}
 \caption{$\dtop$ versus induced pairing. Red dashed: $\vz$ fixed at $3$~meV,
 showing spurious non-monotonicity. Blue: $\vz$ re-optimised at each $\Delta$,
@@ -577,6 +737,11 @@ figures are reproducible from it.
   M.~P.~A. Fisher, Phys. Rev. B \textbf{84}, 014503 (2011).
 \bibitem{Wang2014} E. Wang \emph{et al.}, Absence of a proximity effect in a
   topological insulator on a cuprate superconductor, arXiv:1403.4184.
+\bibitem{MicrosoftPb2026} Microsoft Quantum, 20-second parity lifetime in an
+  InAs--Pb tetron device, arXiv:2606.03884 (2026).
+\bibitem{Rachmilowitz2020} B. Rachmilowitz \emph{et al.}, Coulomb blockade
+  effects in a topological insulator grown on a high-$T_c$ cuprate
+  superconductor, npj Quantum Mater. \textbf{5}, 72 (2020), arXiv:2001.00906.
 \bibitem{Wang2012} P. Wang \emph{et al.}, Proximity-induced high-temperature
   superconductivity in the topological insulators Bi$_2$Se$_3$ and
   Bi$_2$Te$_3$, Nat. Commun. \textbf{3}, 1056 (2012).
