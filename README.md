@@ -25,7 +25,7 @@ The full technical write-up is [`paper/main.tex`](paper/main.tex) (REVTeX,
 
 ## The geometry
 
-![Device schematic: Milestone 1 sample and full architecture](paper/figs/fig0_schematic.png)
+![Device schematic: Milestone 1 sample and full architecture](paper/figs/fig0_schematic_render.png)
 
 *Cross-section. **(a)** The Milestone 1 sample: bilayer down first, Bi₂Se₃ on
 top, so the proximitised surface is exposed to a tunnelling probe. No gating,
